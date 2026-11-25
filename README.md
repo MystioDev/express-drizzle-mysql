@@ -113,57 +113,19 @@ cd my-awesome-api
 
 ## 🎨 Customizing the Template for Your Project
 
-When using this template for an exam or a new backend project, follow these simple steps to adapt it:
+When using this template for an exam or a new backend project, follow these steps:
 
-1. **Update `package.json`** *(optional)*:
-   Change `"name"`, `"description"`, and `"author"` to match your project.
+1. **Define Your Tables (`src/db/schema.js`)**:
+   Define and export your MySQL tables using Drizzle ORM.
 
-2. **Define Your Tables (`src/db/schema.js`)**:
-   Add and export your tables using Drizzle ORM:
-   ```javascript
-   const { mysqlTable, int, varchar, timestamp } = require("drizzle-orm/mysql-core");
+2. **Create Your Routes (`src/routes/example.js` or a new route file)**:
+   Implement your Express router in `src/routes/example.js` (or rename/create a new route file under `src/routes/`).
 
-   const products = mysqlTable("products", {
-     id: int("id").primaryKey().autoincrement(),
-     title: varchar("title", { length: 255 }).notNull(),
-     createdAt: timestamp("created_at").defaultNow(),
-   });
+3. **Mount Your Routes (`src/index.js`)**:
+   Import your router and register it with `app.use(...)` in `src/index.js`.
 
-   module.exports = { products };
-   ```
-
-3. **Create Your Routes (`src/routes/example.js` or a new route file)**:
-   Implement your Express router in `src/routes/example.js` (or rename/create a new file like `src/routes/products.js`):
-   ```javascript
-   const express = require("express");
-   const router = express.Router();
-   const db = require("../db/db");
-   const { products } = require("../db/schema");
-
-   router.get("/", async (req, res) => {
-     try {
-       const allProducts = await db.select().from(products);
-       res.status(200).json(allProducts);
-     } catch (error) {
-       res.status(500).json({ error: error.message });
-     }
-   });
-
-   module.exports = router;
-   ```
-
-4. **Mount in `src/index.js`**:
-   Uncomment and update the route import and `app.use(...)` call in `src/index.js`:
-   ```javascript
-   const productsRouter = require("./routes/products");
-
-   app.use("/api/products", productsRouter);
-   ```
-
-5. **Sync Your Changes**:
-   ```bash
-   npm run db:push
-   ```
+4. **Sync Your Database Schema**:
+   Push your Drizzle schema changes to MySQL using `npm run db:push`.
 
 ---
 
