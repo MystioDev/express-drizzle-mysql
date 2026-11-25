@@ -8,11 +8,22 @@
 
 A minimal, clean, and beginner-friendly REST API template built with **Express 5**, **Drizzle ORM**, and **MySQL**.
 
+> [!IMPORTANT]
+> **Exam Branch Notice (`exam`)**
+> This branch was created **exclusively for students taking exams**. Unlike the `master` branch, the pre-built `users` schema and `/api/users` CRUD endpoints have been removed and replaced with clean placeholders (`src/db/schema.js`, `src/routes/example.js`, and commented route imports in `src/index.js`) so students can implement their exam tasks from scratch.
+
 ---
 
 ## ⚡ Quick Start: Use This Template
 
 You can spin up your own backend API in seconds using this repository as a template.
+
+### For Students (Cloning the `exam` Branch Directly)
+
+```bash
+git clone -b exam https://github.com/MystioDev/express-drizzle-mysql.git
+cd express-drizzle-mysql
+```
 
 ### Option A: Using the GitHub UI (Recommended)
 
@@ -87,9 +98,9 @@ cd my-awesome-api
 ├── src/
 │   ├── db/
 │   │   ├── db.js                # MySQL pool & Drizzle ORM client
-│   │   └── schema.js            # Drizzle table schemas
+│   │   └── schema.js            # Drizzle table schemas (empty placeholder)
 │   ├── routes/
-│   │   └── users.js             # User CRUD router
+│   │   └── example.js           # Example route placeholder
 │   └── index.js                 # Server entry point & route mounting
 ├── .env.example                 # Environment variables template
 ├── .gitignore                   # Git ignore rules
@@ -102,13 +113,13 @@ cd my-awesome-api
 
 ## 🎨 Customizing the Template for Your Project
 
-When using this template for a new backend project, follow these simple steps to adapt it:
+When using this template for an exam or a new backend project, follow these simple steps to adapt it:
 
-1. **Update `package.json`**:
+1. **Update `package.json`** *(optional)*:
    Change `"name"`, `"description"`, and `"author"` to match your project.
 
 2. **Define Your Tables (`src/db/schema.js`)**:
-   Add or replace tables using Drizzle ORM:
+   Add and export your tables using Drizzle ORM:
    ```javascript
    const { mysqlTable, int, varchar, timestamp } = require("drizzle-orm/mysql-core");
 
@@ -118,10 +129,11 @@ When using this template for a new backend project, follow these simple steps to
      createdAt: timestamp("created_at").defaultNow(),
    });
 
-   module.exports = { users, products };
+   module.exports = { products };
    ```
 
-3. **Create Your Routes (`src/routes/products.js`)**:
+3. **Create Your Routes (`src/routes/example.js` or a new route file)**:
+   Implement your Express router in `src/routes/example.js` (or rename/create a new file like `src/routes/products.js`):
    ```javascript
    const express = require("express");
    const router = express.Router();
@@ -141,6 +153,7 @@ When using this template for a new backend project, follow these simple steps to
    ```
 
 4. **Mount in `src/index.js`**:
+   Uncomment and update the route import and `app.use(...)` call in `src/index.js`:
    ```javascript
    const productsRouter = require("./routes/products");
 
@@ -162,49 +175,19 @@ When using this template for a new backend project, follow these simple steps to
 | `npm start` | `node src/index.js` | Runs the server in production mode |
 | `npm run db:push` | `drizzle-kit push` | Applies schema changes directly to MySQL |
 | `npm run db:generate` | `drizzle-kit generate` | Generates SQL migrations from schema |
+| `npm run db:migrate` | `drizzle-kit migrate` | Applies generated SQL migrations |
 | `npm run db:studio` | `drizzle-kit studio` | Opens Drizzle Studio (web database browser) |
 | `npm run db:check` | `drizzle-kit check` | Validates schema consistency |
 
 ---
 
-## 📡 Included Example API (`/api/users`)
+## 📝 Exam Branch Details (`exam`)
 
-This template includes a ready-to-use CRUD example for **Users**:
+Compared to the `master` branch, this branch has been stripped down to a clean starting point for student exams:
 
-| Method | Endpoint | Description | Request Body |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/users` | List all users | None |
-| `GET` | `/api/users/:id` | Get user by ID | None |
-| `POST` | `/api/users` | Create a user | `{ "name": "Alice", "email": "alice@example.com" }` |
-| `PUT` | `/api/users/:id` | Update a user by ID | `{ "name": "Alice Smith", "email": "alice@example.com" }` |
-| `DELETE` | `/api/users/:id` | Delete a user by ID | None |
-
-#### Sample Responses:
-
-- **Create User (`POST /api/users`) $\rightarrow$ `201 Created`:**
-  ```json
-  {
-    "message": "User created successfully"
-  }
-  ```
-
-- **Get All Users (`GET /api/users`) $\rightarrow$ `200 OK`:**
-  ```json
-  [
-    {
-      "id": 1,
-      "name": "Alice",
-      "email": "alice@example.com"
-    }
-  ]
-  ```
-
-- **User Not Found (`GET /api/users/999`) $\rightarrow$ `404 Not Found`:**
-  ```json
-  {
-    "error": "User not found"
-  }
-  ```
+- **`src/db/schema.js`**: Pre-configured with `drizzle-orm/mysql-core` imports and an empty `module.exports = {}` (the sample `users` table was removed).
+- **`src/routes/example.js`**: Replaces `src/routes/users.js` with an empty route placeholder file.
+- **`src/index.js`**: Express app and JSON middleware are configured, with `exampleRouter` import and `/api/example` mounting commented out and ready to be enabled.
 
 ---
 
