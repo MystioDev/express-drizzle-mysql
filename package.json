@@ -10,7 +10,18 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:check": "drizzle-kit check"
+    "db:check": "drizzle-kit check",
+    "docker:up": "docker compose up",
+    "docker:up:d": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:down:v": "docker compose down -v",
+    "docker:logs": "docker compose logs -f",
+    "docker:restart": "docker compose restart",
+    "docker:db:push": "docker compose exec api npm run db:push",
+    "docker:db:generate": "docker compose exec api npm run db:generate",
+    "docker:db:migrate": "docker compose exec api npm run db:migrate",
+    "docker:db:studio": "docker compose exec api npm run db:studio",
+    "docker:db:check": "docker compose exec api npm run db:check"
   },
   "keywords": [
     "express",

@@ -48,18 +48,23 @@ A single `docker-compose.yml` file is included that spins up both the **MySQL 8.
 
 2. **Start the database and API containers:**
    ```bash
-   docker compose up
+   npm run docker:up
    ```
-   *(Or run `docker compose up -d` to start them in the background.)*
+   *(Or run `npm run docker:up:d` to start them in the background.)*
 
 3. **Access the API:**
    Your server is live at [http://localhost:3000](http://localhost:3000) with live reload enabled!
 
-4. **Stop the containers:**
+4. **Push schema changes while containers are running:**
    ```bash
-   docker compose down
+   npm run docker:db:push
    ```
-   *(Use `docker compose down -v` to also remove the persisted database volume.)*
+
+5. **Stop the containers:**
+   ```bash
+   npm run docker:down
+   ```
+   *(Use `npm run docker:down:v` to also remove the persisted database volume.)*
 
 ---
 
@@ -183,12 +188,18 @@ When using this template for a new backend project, follow these simple steps to
 
 5. **Sync Your Changes**:
    ```bash
+   # Local setup
    npm run db:push
+
+   # Or inside Docker
+   npm run docker:db:push
    ```
 
 ---
 
 ## 📜 Available Scripts
+
+### Local & Drizzle Scripts
 
 | Script | Command | Description |
 | :--- | :--- | :--- |
@@ -196,8 +207,25 @@ When using this template for a new backend project, follow these simple steps to
 | `npm start` | `node src/index.js` | Runs the server in production mode |
 | `npm run db:push` | `drizzle-kit push` | Applies schema changes directly to MySQL |
 | `npm run db:generate` | `drizzle-kit generate` | Generates SQL migrations from schema |
+| `npm run db:migrate` | `drizzle-kit migrate` | Applies generated SQL migrations |
 | `npm run db:studio` | `drizzle-kit studio` | Opens Drizzle Studio (web database browser) |
 | `npm run db:check` | `drizzle-kit check` | Validates schema consistency |
+
+### Docker Helper Scripts
+
+| Script | Command | Description |
+| :--- | :--- | :--- |
+| `npm run docker:up` | `docker compose up` | Starts MySQL and API containers in foreground |
+| `npm run docker:up:d` | `docker compose up -d` | Starts MySQL and API containers in detached mode |
+| `npm run docker:down` | `docker compose down` | Stops and removes containers |
+| `npm run docker:down:v` | `docker compose down -v` | Stops containers and removes database volume |
+| `npm run docker:logs` | `docker compose logs -f` | Follows live logs from the containers |
+| `npm run docker:restart` | `docker compose restart` | Restarts running containers |
+| `npm run docker:db:push` | `docker compose exec api npm run db:push` | Pushes Drizzle schema inside the running API container |
+| `npm run docker:db:generate` | `docker compose exec api npm run db:generate` | Generates SQL migrations inside the API container |
+| `npm run docker:db:migrate` | `docker compose exec api npm run db:migrate` | Runs SQL migrations inside the API container |
+| `npm run docker:db:studio` | `docker compose exec api npm run db:studio` | Runs Drizzle Studio inside the API container |
+| `npm run docker:db:check` | `docker compose exec api npm run db:check` | Checks schema consistency inside the API container |
 
 ---
 
