@@ -2,14 +2,20 @@ const { drizzle } = require("drizzle-orm/mysql2");
 const mysql = require("mysql2/promise");
 const schema = require("./schema");
 
-if (!process.env.DATABASE_URL) {
+const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
+
+if (!DB_HOST || !DB_USER || !DB_NAME) {
   console.warn(
-    "[WARN] DATABASE_URL is not defined in environment variables. Please check your .env file."
+    "[WARN] Database configuration (DB_HOST, DB_USER, DB_NAME) is missing in environment variables. Please check your .env file."
   );
 }
 
 const poolConnection = mysql.createPool({
-  uri: process.env.DATABASE_URL,
+  host: DB_HOST || "localhost",
+  port: Number(DB_PORT) || 3306,
+  user: DB_USER || "root",
+  password: DB_PASSWORD || "",
+  database: DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,

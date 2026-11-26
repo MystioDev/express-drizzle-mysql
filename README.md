@@ -37,19 +37,45 @@ cd my-awesome-api
 
 ## 🛠️ Project Setup
 
-### Prerequisites
+### Option 1: Run with Docker Compose (Recommended)
+
+A single `docker-compose.yml` file is included that spins up both the **MySQL 8.0 database** and the **Express API**, automatically pushes the Drizzle schema, and connects the API to the database.
+
+1. **Set up environment variables:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Start the database and API containers:**
+   ```bash
+   docker compose up
+   ```
+   *(Or run `docker compose up -d` to start them in the background.)*
+
+3. **Access the API:**
+   Your server is live at [http://localhost:3000](http://localhost:3000) with live reload enabled!
+
+4. **Stop the containers:**
+   ```bash
+   docker compose down
+   ```
+   *(Use `docker compose down -v` to also remove the persisted database volume.)*
+
+---
+
+### Option 2: Run Locally (Manual Setup)
+
+#### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18 or newer)
 - A running [MySQL](https://www.mysql.com/) instance
 
-> **Tip: Quick MySQL via Docker**
+> **Tip: Start only MySQL via Docker Compose**
 > ```bash
-> docker run --name mysql-dev -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=express_drizzle_db -p 3306:3306 -d mysql:8
+> docker compose up -d mysql
 > ```
 
----
-
-### Step-by-Step Installation
+#### Step-by-Step Installation
 
 1. **Install dependencies:**
    ```bash
@@ -60,10 +86,17 @@ cd my-awesome-api
    ```bash
    cp .env.example .env
    ```
-   Open `.env` and set your database connection URL:
+   Open `.env` and configure your database connection settings:
    ```env
    PORT=3000
-   DATABASE_URL="mysql://root:password@localhost:3306/express_drizzle_db"
+
+   ### MySQL Database Configuration
+   # Docker Compose Database Configuration
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USER=root
+   DB_PASSWORD=password
+   DB_NAME=express_drizzle_db
    ```
 
 3. **Push the database schema:**
@@ -93,6 +126,7 @@ cd my-awesome-api
 │   └── index.js                 # Server entry point & route mounting
 ├── .env.example                 # Environment variables template
 ├── .gitignore                   # Git ignore rules
+├── docker-compose.yml           # Docker Compose setup (MySQL + Express API)
 ├── drizzle.config.js            # Drizzle Kit configuration
 ├── package.json                 # Project dependencies & scripts
 └── README.md                    # Project documentation
